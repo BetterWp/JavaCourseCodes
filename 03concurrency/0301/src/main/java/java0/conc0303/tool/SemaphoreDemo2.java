@@ -18,9 +18,9 @@ public class SemaphoreDemo2 {
                 final int threadNum = i;
                 exec.execute(() -> {
                     try {
-                        semaphore.acquire(3); // 获取全部许可，退化成串行执行
+                        semaphore.acquire(); // 获取全部许可，退化成串行执行
                         test(threadNum);
-                        semaphore.release(3); // 释放多个许可
+                        semaphore.release(); // 释放多个许可
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

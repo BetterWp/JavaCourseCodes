@@ -30,7 +30,7 @@ public class LockSupportDemo {
         t2.start();
         Thread.sleep(3000L);
         t1.interrupt();
-        LockSupport.unpark(t2);
+        LockSupport.unpark(t1);
         t1.join();
         t2.join();
     }

@@ -12,6 +12,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.SneakyThrows;
 
@@ -24,6 +25,7 @@ public class GuavaDemo {
     static EventBus bus = new EventBus();
     static {
         bus.register(new GuavaDemo());
+        bus.register(new GenericDemo());
     }
     
     
@@ -46,10 +48,14 @@ public class GuavaDemo {
         // EventBus
         // SPI+service loader
         // Callback/Listener
-        // 
+        // 观察者 责任链模式
         Student student2 = new Student(2, "KK02");
         System.out.println("I want " + student2 + " run now.");
         bus.post(new AEvent(student2));
+
+        Student student1 = new Student(1, "KK01");
+        System.out.println("I want " + student1 + " run now.");
+        bus.post(new AEvent(student1));
     }
     
     private static void testBiMap(List<String> lists) {
@@ -105,15 +111,27 @@ public class GuavaDemo {
     
     @Data
     @AllArgsConstructor
+    @Builder
     public static class AEvent{
-        private Student student;
+         Student student;
+         int state = 0;
+
+         public AEvent(Student student){
+             this.student = student;
+         }
+
     }
-    
+
+    @Subscribe
+    public void handle1(AEvent ae){
+        System.out.println("handle1 is running.");
+    }
+
     @Subscribe
     public void handle(AEvent ae){
-        System.out.println(ae.student + " is running.");
+        System.out.println(this.getClass().toString() + ",msg:" +ae + " is running.");
     }
-    
+
     
     
 }

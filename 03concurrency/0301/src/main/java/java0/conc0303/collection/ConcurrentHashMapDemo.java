@@ -21,9 +21,11 @@ public class ConcurrentHashMapDemo {
                 for (int i = 0; i < 5; i++) {
                     oldValue = count.get("a");
                     if (null == oldValue) {
+                        System.out.println(Thread.currentThread().getName()+"第一个null："+i);
                         AtomicInteger zeroValue = new AtomicInteger(0);
                         oldValue = count.putIfAbsent("a", zeroValue);
                         if (null == oldValue) {
+                            System.out.println(Thread.currentThread().getName()+"第二个null："+i);
                             oldValue = zeroValue;
                         }
                     }

@@ -18,6 +18,8 @@ public class ExecutorServiceDemo {
             }).get();
 
             System.out.println("str=" + str);
+            Thread.currentThread().getThreadGroup().list();
+            executorService.shutdownNow();
         } catch (Exception e) {
             e.printStackTrace();
         }

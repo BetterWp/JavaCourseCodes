@@ -10,7 +10,7 @@ public class CopyOnWriteArrayListDemo2 {
         // 这个例子再次证明，
         // 多个步骤的操作，不能保证原子性
         // list.size() 获取到的数，再继续用list时，可能已经变了
-        // 
+        //
         test();
     }
     public static void test(){

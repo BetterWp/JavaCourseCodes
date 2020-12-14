@@ -33,7 +33,9 @@ public class Thread3 {
     }
 
     private void m4t2(Inner inner) {
-        inner.m4t2();
+        synchronized (inner) {
+            inner.m4t2();
+        }
     }
 
     public static void main(String[] args) {

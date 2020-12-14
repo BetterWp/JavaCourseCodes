@@ -4,7 +4,7 @@ package java0.conc0302.atomic;
 public class AtomicMain {
 
     public static void main(String[] args) {
-        final AtomicCount count = new AtomicCount();
+        final SyncCount count = new SyncCount();
         for (int i = 0; i < 100; i++) {
             new Thread(new Runnable() {
                 @Override

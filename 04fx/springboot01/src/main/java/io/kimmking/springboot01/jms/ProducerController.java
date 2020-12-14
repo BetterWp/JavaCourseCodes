@@ -22,7 +22,7 @@ public class ProducerController
     private Topic topic;
     
     
-    // curl http://localhost:8080/queue/test -X POST -d "testququuquqq"
+    // curl http://192.168.100.117:8080/queue/test -X POST -d "testququuquqq"
     @PostMapping("/queue/test")
     public String sendQueue(@RequestBody String str) {
         this.sendMessage(this.queue, str);
@@ -30,7 +30,7 @@ public class ProducerController
     }
     
     
-    //curl http://localhost:8080/topic/test -X POST -d "testtopiccccc"
+    //curl http://192.168.100.117:8080/topic/test -X POST -d "testtopiccccc"
     @PostMapping("/topic/test")
     public String sendTopic(@RequestBody String str) {
         this.sendMessage(this.topic, str);

@@ -28,6 +28,7 @@ public class StreamParallelDemo {
             }
         });
         System.out.println("blockingQueue:" + blockingQueue.toString());
+        System.out.println("blockingQueueSize:" + blockingQueue.size());
     }
     
     

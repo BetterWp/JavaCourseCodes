@@ -71,7 +71,7 @@ public class LambdaDemo<T extends Serializable&Comparable&Collection> {
         void sayMessage(String message);
     }
     
-    private <T> T operate(int a, int b, MathOperation<T> mathOperation){
+    private T operate(int a, int b, MathOperation<T> mathOperation){
         return mathOperation.operation(a, b);
     }
     

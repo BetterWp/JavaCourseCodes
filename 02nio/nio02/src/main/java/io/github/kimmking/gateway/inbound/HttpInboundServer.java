@@ -13,16 +13,18 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 
 public class HttpInboundServer {
     private static Logger logger = LoggerFactory.getLogger(HttpInboundServer.class);
 
     private int port;
-    
+
     private String proxyServer;
 
     public HttpInboundServer(int port, String proxyServer) {
-        this.port=port;
+        this.port = port;
         this.proxyServer = proxyServer;
     }
 

@@ -1,6 +1,7 @@
 package java0.nio01;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,7 +28,7 @@ public class HttpServer03 {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             printWriter.println("HTTP/1.1 200 OK");
             printWriter.println("Content-Type:text/html;charset=utf-8");
-            String body = "hello,nio";
+            String body = "hello,nio3";
             printWriter.println("Content-Length:" + body.getBytes().length);
             printWriter.println();
             printWriter.write(body);
@@ -36,5 +37,16 @@ public class HttpServer03 {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void handleInputStreanm(Socket socket) throws IOException {
+        InputStream inputStream = socket.getInputStream();
+        byte[] buffer = new byte[4096];
+        StringBuilder sb = new StringBuilder();
+        int tmp = 0;
+        while ((tmp = inputStream.read(buffer))!=-1){
+            sb.append(new String(buffer,"UTF-8"));
+        }
+        //
     }
 }

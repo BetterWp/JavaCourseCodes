@@ -48,7 +48,7 @@ public class GuavaDemo {
         // 更强的集合操作
         // 简化 创建
     
-        List<Integer> list = Lists.newArrayList(4,2,3,5,1,2,2,7,6);
+        List<Integer> list = Lists.newArrayList(4,2,3,5,1,2,2,7,6,9);
     
         List<List<Integer>> list1 = Lists.partition(list,3);
         print(list1);

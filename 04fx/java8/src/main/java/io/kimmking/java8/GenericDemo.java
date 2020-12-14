@@ -1,9 +1,18 @@
 package io.kimmking.java8;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 public class GenericDemo {
+
+    static EventBus eventBus = new EventBus("test");
+    static {
+        eventBus.register(new A());
+    }
+
     public static void main(String[] args) {
         Demo demo = new Demo();
         Class clazz = demo.getClass();
@@ -26,5 +35,12 @@ public class GenericDemo {
     
     public static class Demo extends Person<GenericDemo> {
         
+    }
+
+    @Subscribe
+    public void handle(GuavaDemo.AEvent ae){
+        System.out.println(this.getClass().toString() + ",msg:" + ae + " is running.");
+        ae.setState(1);
+        eventBus.post(ae);
     }
 }

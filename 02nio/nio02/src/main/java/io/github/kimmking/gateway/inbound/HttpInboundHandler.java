@@ -1,22 +1,48 @@
 package io.github.kimmking.gateway.inbound;
 
+import io.github.kimmking.gateway.filter.HttpRequestFilter;
+import io.github.kimmking.gateway.filter.ReqHeadFilter;
 import io.github.kimmking.gateway.outbound.httpclient4.HttpOutboundHandler;
+import io.github.kimmking.gateway.outbound.netty4.NettyHttpClient;
+import io.github.kimmking.gateway.outbound.okhttp.OkhttpOutboundHandler;
+import io.github.kimmking.gateway.router.RandowRouter;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpUtil;
 import io.netty.util.ReferenceCountUtil;
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.Random;
+
+import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
+import static io.netty.handler.codec.http.HttpResponseStatus.OK;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     private final String proxyServer;
-    private HttpOutboundHandler handler;
-    
+//    private OkhttpOutboundHandler handler;
+    private NettyHttpClient handler;
+    private HttpRequestFilter filter;
+    private RandowRouter randowRouter;
+
     public HttpInboundHandler(String proxyServer) {
         this.proxyServer = proxyServer;
-        handler = new HttpOutboundHandler(this.proxyServer);
+        randowRouter = new RandowRouter();
+        String route = randowRouter.route(Arrays.asList(proxyServer.split(",")));
+//        handler = new OkhttpOutboundHandler(route);
+        handler = new NettyHttpClient(route);
+        filter = new ReqHeadFilter();
+
     }
     
     @Override
@@ -27,16 +53,16 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            //logger.info("channelRead流量接口请求开始，时间为{}", startTime);
-            FullHttpRequest fullRequest = (FullHttpRequest) msg;
-//            String uri = fullRequest.uri();
-//            //logger.info("接收到的请求url为{}", uri);
-//            if (uri.contains("/test")) {
-//                handlerTest(fullRequest, ctx);
-//            }
-    
-            handler.handle(fullRequest, ctx);
-    
+            if (msg instanceof FullHttpRequest){
+                FullHttpRequest fullRequest = (FullHttpRequest) msg;
+                if (fullRequest.uri().contains("/favicon.ico")){
+                    return;
+                }
+                filter.filter(fullRequest);
+
+                handler.handle(fullRequest, ctx);
+
+            }
         } catch(Exception e) {
             e.printStackTrace();
         } finally {

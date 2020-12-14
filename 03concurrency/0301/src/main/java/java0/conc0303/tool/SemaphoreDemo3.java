@@ -29,7 +29,7 @@ public class SemaphoreDemo3 {
             while (true) {
                 try {
                     buffer.put(n);
-                    System.out.println(">" + n);
+                    System.out.println("Producer>" + n);
                     // 速度较快。休息10毫秒
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -45,7 +45,7 @@ public class SemaphoreDemo3 {
         public void run() {
             while (true) {
                 try {
-                    System.out.println("<" + buffer.take());
+                    System.out.println("<Consumer" + buffer.take());
                     // 速度较慢，休息1000毫秒
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
